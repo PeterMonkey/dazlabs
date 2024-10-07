@@ -10,6 +10,6 @@ connection()
 .then(response => response)
 .catch(err => err)
 
-app.listen("8080", () => console.log('Server Up'))
+app.listen("8080", () => console.log('Server Up on port 8080'))
 
 export default app
