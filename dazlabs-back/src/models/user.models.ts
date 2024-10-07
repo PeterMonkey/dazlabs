@@ -9,7 +9,7 @@ export interface ICats {
     colors: string[]
 }
 
-const catSchema = new Schema<ICats>({
+export const catSchema = new Schema<ICats>({
     name: {type: String, required: true},
     origin: {type: String, required: true},
     temperament: {type: String, required: true},
@@ -18,6 +18,6 @@ const catSchema = new Schema<ICats>({
     colors: {type: [String], required: true}
 })
 
-const catModel = model<ICats>('Cats', catSchema)
+const CatModel = model<ICats>('Cats', catSchema)
 
-export default catModel
+export default CatModel
