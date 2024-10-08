@@ -2,8 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import catRoute from './routes/cats.route.ts'
 import { connection } from './database/connect.js'
+import 'dotenv/config'
 
 const app = express()
+const PORT = process.env.PORT
 
 app.use(cors())
 app.use(express.json())
@@ -15,6 +17,6 @@ connection()
 //routes
 app.use(catRoute)
 
-app.listen("8080", () => console.log('Server Up on port 8080'))
+app.listen(PORT, () => console.log(`Server Up on port ${PORT}`))
 
 export default app
