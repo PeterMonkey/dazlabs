@@ -22,7 +22,7 @@ export class CatServices {
             }
     
             await CatModel.create(newCat)
-            return res.status(200).json({
+            return res.status(201).json({
                 ok: true,
                 response: newCat
             })
@@ -37,8 +37,32 @@ export class CatServices {
        
         try {
             const cats = await CatModel.find().skip(skip).limit(limit)
-            return res.json({
-                cats
+            if(cats.length > 0){
+                return res.status(200).json({
+                    cats
+                })
+            }
+            return res.status(404).json({
+                message: 'Elementos no encontrados'
+            })
+        } catch (error) {
+            throw new Error()
+        }
+    }
+
+    async getCatById(req: Request, res: Response): Promise<Response<ICats> | any> {
+        const id = req.params.id
+        try {
+            const cat = await CatModel.findById(id)
+            if(cat === null){
+                return res.status(404).json({
+                    ok: false,
+                    message: 'Elemento no encontrado'
+                })
+            }
+            return res.status(200).json({
+                ok: true,
+                cat
             })
         } catch (error) {
             throw new Error()
@@ -58,7 +82,7 @@ export class CatServices {
                     message: "Elemento no encontrado"
                 })
             }
-            return res.status(200).json({
+            return res.status(201).json({
                 ok: true,
                 message: `Cat with id ${id} updated`
             }) 

@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: API de Gatos
+  description: API para gestionar información de razas de gatos
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: cat
+    description: Endpoint con informacion de los gatos
+paths:
+  /:
+    get:
+      tags:
+        - cat
+      summary: Obtener una lista de razas de gatos
+      parameters:
+        - name: skip
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: limit
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Lista de razas de gatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    breed:
+                      type: string
+                      description: Raza del gato
+                    origin:
+                      type: string
+                      description: Origen del gato
+                    image:
+                      type: string
+                      description: URL de la imagen del gat
+        '404':
+          description: "Elementos no encontrados"
+  /create:
+    post:
+      tags:
+        - cat
+      summary: Crear nuevo registro de gato
+      description: Crear nuevo registro de gato
+      requestBody:
+        description: crear nuevo gato
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  breed:
+                    type: string
+                    description: Raza del gato
+                  origin:
+                    type: string
+                    description: Origen del gato
+                  image:
+                    type: string
+                    description: URL de la imagen del gat
+      responses:
+        '200':
+          description: creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      breed:
+                        type: string
+                        description: Raza del gato
+                      origin:
+                        type: string
+                        description: Origen del gato
+                      image:
+                        type: string
+                        description: URL de la imagen del gat
+  /{id}:
+    get:
+      tags:
+        - cat
+      summary: Obtener un gato por id
+      parameters:
+        - name: id
+          in: path
+          description: Obtener gato por id
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de razas de gatos
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    breed:
+                      type: string
+                      description: Raza del gato
+                    origin:
+                      type: string
+                      description: Origen del gato
+                    image:
+                      type: string
+                      description: URL de la imagen del gat
+        '404':
+          description: "Elemento no encontrados"
+  /update/{id}:
+    patch:
+      tags:
+        - cat
+      summary: Actualizar informacion de un gato
+      parameters:
+        - name: id
+          in: path
+          description: Actualizar gato
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Cat with id 67047a5d3d8093bffae35d11 updated
+        '404':
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Elemento no encontrado
+  /delete/{id}:
+    delete:
+      tags:
+        - cat
+      summary: Eliminar registro de gato
+      parameters:
+        - name: id
+          in: path
+          description: Eliminar
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Eleiminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Cat with id 67047a5d3d8093bffae35d11 deleted
+        '404':
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Elemento no encontrado
+                    
+components:
+  schemas:
+    Cats:
+      type: object
+      properties:
+        breed:
+          type: string
+          description: Raza del gato
+        origin:
+          type: string
+          description: Origen del gato
+        image:
+          type: string
+          description: URL de la imagen del gat
+        
