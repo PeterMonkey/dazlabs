@@ -1,6 +1,13 @@
-import { Response, Request, Handler } from "express";
+import { Response, Request } from "express";
 import CatModel, { ICats } from "../models/user.models.js";
 import axios from "axios";
+
+interface CustomRequest extends Request<{}, {}, {}, QueryParams> {}
+
+interface QueryParams {
+  skip: number;
+  limit: number;
+}
 
 export class CatServices {
         
@@ -25,9 +32,11 @@ export class CatServices {
         }
     }
 
-    async getCats(req: Request, res: Response): Promise<Response<ICats> | any>{
+    async getCats(req: CustomRequest, res: Response): Promise<Response<ICats> | any>{
+        const {skip, limit} = req.query
+       
         try {
-            const cats = await CatModel.find()
+            const cats = await CatModel.find().skip(skip).limit(limit)
             return res.json({
                 cats
             })
