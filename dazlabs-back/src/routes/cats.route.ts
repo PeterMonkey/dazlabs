@@ -1,4 +1,4 @@
-import { Router } from "express"; 
+import { Router, Request, Response } from "express"; 
 import { CatServices } from "../services/cats.services.ts";
 
 const route = Router()

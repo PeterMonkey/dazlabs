@@ -1,9 +1,10 @@
 import { Response, Request, Handler } from "express";
 import CatModel, { ICats } from "../models/user.models.js";
+import axios from "axios";
 
 export class CatServices {
         
-    async createCat(req: Request, res: Response): Promise<Response>{
+    async createCat(req: Request, res: Response): Promise<Response | any> {
         try {
             const {breed, origin, image} = req.body;
     
@@ -24,7 +25,7 @@ export class CatServices {
         }
     }
 
-    async getCats(req: Request, res: Response): Promise<Response<ICats>>{
+    async getCats(req: Request, res: Response): Promise<Response<ICats> | any>{
         try {
             const cats = await CatModel.find()
             return res.json({
@@ -35,7 +36,7 @@ export class CatServices {
         }
     }
 
-    async updateCat(req: Request, res: Response): Promise<Response>{
+    async updateCat(req: Request, res: Response): Promise<Response | any>{
         try {
             const id = req.params.id;
     
@@ -58,7 +59,7 @@ export class CatServices {
         }
     }
 
-    async deleteCat(req: Request, res: Response): Promise<Response>{
+    async deleteCat(req: Request, res: Response): Promise<Response | any>{
         try {
             const id = req.params.id;
             const cat = await CatModel.findByIdAndDelete({_id: id})
@@ -75,6 +76,22 @@ export class CatServices {
     
         } catch (error) {
             throw new Error()
+        }
+    }
+
+    async apiCats() {
+        const urlCats = process.env.API_CATS_URL || ''
+        const apiKey = process.env.X_RAPIDAPI_KEY
+        try {
+            const cats = await axios.get(urlCats, {
+                headers: {
+                    "x-rapidapi-key": `${apiKey}`
+                }
+            })
+            return cats.data
+            
+        } catch (error) {
+            console.error(error)
         }
     }
 }
