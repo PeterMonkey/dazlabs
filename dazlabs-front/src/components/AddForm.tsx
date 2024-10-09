@@ -8,17 +8,19 @@ import { useStoreApp } from "../store/state"
 
 export default function AddForm(){
 
-    const { items, addItem } = useStoreApp()
+    const { addItem } = useStoreApp()
 
     const [newItem, setNewItem] = useState({ breed: "", origin: "", image: "" })
 
     const handleClick = () => {
-        addItem({breed: newItem.breed, origin: newItem.origin, image: newItem.image})
-        setNewItem({ breed: "", origin: "", image: "" })
+        if(newItem.breed && newItem.origin && newItem.image) {
+            addItem({breed: newItem.breed, origin: newItem.origin, image: newItem.image})
+            setNewItem({ breed: "", origin: "", image: "" })
+        }
     }
 
-    console.log(items)
-    console.log(newItem)
+    // console.log(items)
+    // console.log(newItem)
 
     return(
         <>
