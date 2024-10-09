@@ -14,24 +14,50 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 import { Pencil, Trash2 } from "lucide-react"
 import { useStoreApp, Items } from "../store/state"
 
-import { getCats } from "../services/api.service"
+import { getCats, updateCat, deleteCat} from "../services/api.service"
 
 
 export default function ItemsCard(){
 
 
-    const [item, setItems] = useState<Items[]>([])
+    //const [data, setData] = useState<UpdateData[]>([])
     const [editingItem, setEditingItem] = useState<Items | null>(null)
     const [selectedItem, setSelectedItem] = useState<Items | null>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [isChange, setIsChange] = useState(false)
 
     const { items, loadData } = useStoreApp()
 
-    const updateItem = () => {
-      if (editingItem) {
-        setItems(items.map((item) => (item.id === editingItem.id ? editingItem : item)))
-        setEditingItem(null)
+    const updateItem = async (id: string| undefined) => {
+      if (id) {
+        try {
+          if(editingItem){
+            const data = {
+              breed: editingItem.breed,
+              origin: editingItem.origin
+            }
+            //setData(items.map((item) => (item._id === editingItem._id ? editingItem : item)))
+            const cat = await updateCat(id, data)
+            setIsChange(!isChange)
+            return cat
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
+    }
+
+    const deleteItem = async (id: string | undefined) => {
+      if(id){
+        try {
+          const cat = await deleteCat(id)
+          setIsChange(!isChange)
+          return cat
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      //setItems(items.filter((item) => item.id !== id))
     }
 
     const openDialog = (item: Items) => {
@@ -49,16 +75,16 @@ export default function ItemsCard(){
         }
       }
       data()
-    }, [loadData])
+      setIsChange(false)
+    }, [loadData, isChange])
 
     console.log(editingItem)
-    console.log(item)
     console.log(items)
 
     return(
         <>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => (
+        {items.map((item: Items) => (
           <Card key={item.breed}>
             <CardHeader>
               <CardTitle>{item.breed}</CardTitle>
@@ -89,10 +115,10 @@ export default function ItemsCard(){
                       onChange={(e) => setEditingItem({ ...editingItem!, origin: e.target.value })}
                     />
                   </div>
-                  <Button onClick={updateItem}>Actualizar</Button>
+                  <Button onClick={() => updateItem(item._id)}>Actualizar</Button>
                 </DialogContent>
               </Dialog>
-              <Button variant="destructive" onClick={() => deleteItem(item.id)}>
+              <Button variant="destructive" onClick={() => deleteItem(item._id)}>
                 <Trash2 className="mr-2 h-4 w-4" /> Eliminar
               </Button>
               <Button variant="secondary" onClick={() => openDialog(item)}>

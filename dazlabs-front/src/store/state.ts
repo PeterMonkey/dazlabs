@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export interface Items {
-    id?: string;
+    _id?: string;
     breed: string;
     origin: string;
     image: string;
@@ -11,8 +11,8 @@ interface Store {
     items: Items[];
     addItem: (data: Items) => void;
     loadData: (data: Items[]) => void
-    // updateItem: () => void;
-    // deleteItem: () => void;
+    //update: (data: Items) => void;
+    //delete: (id: number) => void;
     // openDialog: () => void;
 }
 
