@@ -14,6 +14,7 @@ import {
   import { Input } from "../components/ui/input"
 
   import { Link } from "react-router-dom"
+  import { login } from "../services/auth.service"
 
   const formSchema = z.object({
     email: z.string().email({message: 'Introduzca un email valido'}),
@@ -27,8 +28,14 @@ export default function Login() {
         resolver: zodResolver(formSchema)
       })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const response = await login(values.email, values.password)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+        //console.log(values)
     }
     return (
         <div className="flex flex-col gap-5">
@@ -55,7 +62,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="password" {...field} />
+                  <Input type="password" placeholder="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

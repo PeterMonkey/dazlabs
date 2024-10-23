@@ -14,6 +14,7 @@ import {
 import { Input } from "../components/ui/input"
 
 import { Link } from "react-router-dom"
+import { register } from "../services/auth.service"
 
   const formSchema = z.object({
     name: z.string({message: 'El nombre es requerido'}),
@@ -27,8 +28,14 @@ export default function Register() {
         resolver: zodResolver(formSchema)
       })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const response = await register(values.name, values.email, values.password)
+            console.log(response)
+            return response
+        } catch (error) {
+            return error
+        }
     }
 
     return (
@@ -69,7 +76,7 @@ export default function Register() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="password" {...field} />
+                  <Input type="password" placeholder="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

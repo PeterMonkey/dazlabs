@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { AuthService } from "../services/auth.services.ts";
+import { AuthController } from "../controller/auth.controller.ts";
 
 const route = Router()
-const authService = new AuthService()
+const authcontroller = new AuthController()
 
-route.post('/register', authService.register)
-route.post('/login', authService.login)
+route.post('/register', authcontroller.register)
+route.post('/login', authcontroller.login)
 
 export default route;

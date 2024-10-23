@@ -1,8 +1,8 @@
-import { Router, Request, Response } from "express"; 
-import { CatServices } from "../services/cats.services.ts";
+import { Router} from "express"; 
+import { CatsController } from "../controller/cats.controller.ts";
 
 const route = Router()
-const catServices = new CatServices()
+const catsController = new CatsController()
 
 /**
  * @swagger
@@ -31,10 +31,10 @@ const catServices = new CatServices()
  *   description: The Jedis managing API
  */
 
-route.post('/create', catServices.createCat)
-route.get('/', catServices.getCats)
-route.get('/:id', catServices.getCatById)
-route.patch('/update/:id', catServices.updateCat)
-route.delete('/delete/:id', catServices.deleteCat)
+route.post('/create', catsController.createCat)
+route.get('/', catsController.getCats)
+route.get('/:id', catsController.getCatById)
+route.patch('/update/:id', catsController.updateCat)
+route.delete('/delete/:id', catsController.deleteCat)
 
 export default route;

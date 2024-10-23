@@ -11,108 +11,65 @@ interface QueryParams {
 
 export class CatServices {
         
-    async createCat(req: Request, res: Response): Promise<Response | any> {
+    async createCat(newCat: ICats): Promise<ICats | any> {
         try {
-            const {breed, origin, image} = req.body;
+            //const {breed, origin, image} = req.body;
     
-            const newCat = {
-                breed,
-                origin,
-                image,
-            }
-    
-            await CatModel.create(newCat)
-            return res.status(201).json({
-                ok: true,
-                response: newCat
-            })
+            const cats = await CatModel.create(newCat)
+            return cats
             
         } catch (error) {
-            throw new Error()
+            throw error
         }
     }
 
-    async getCats(req: CustomRequest, res: Response): Promise<Response<ICats> | any>{
-        const {skip, limit} = req.query
+    async getCats(skip: number, limit: number): Promise<Response<ICats> | any>{
        
         try {
             const cats = await CatModel.find().skip(skip).limit(limit)
-            if(cats.length > 0){
-                return res.status(200).json({
-                    cats
-                })
-            }
-            return res.status(404).json({
-                message: 'Elementos no encontrados'
-            })
+            return cats
+            
         } catch (error) {
-            throw new Error()
+            throw error
         }
     }
 
-    async getCatById(req: Request, res: Response): Promise<Response<ICats> | any> {
-        const id = req.params.id
+    async getCatById(id: string): Promise<Response<ICats> | any> {
+        //const id = req.params.id
         try {
             const cat = await CatModel.findById(id)
-            if(cat === null){
-                return res.status(404).json({
-                    ok: false,
-                    message: 'Elemento no encontrado'
-                })
-            }
-            return res.status(200).json({
-                ok: true,
-                cat
-            })
+            return cat
         } catch (error) {
-            throw new Error()
+            throw error
         }
     }
 
-    async updateCat(req: Request, res: Response): Promise<Response | any>{
+    async updateCat(id: string, updateData:any): Promise<Response | any>{
         try {
-            const id = req.params.id;
+            // const id = req.params.id;
     
-            const updateData = req.body;
+            // const updateData = req.body;
     
             const cat = await CatModel.findByIdAndUpdate({_id: id}, updateData)
-            if(cat === null){
-                return res.status(404).json({
-                    ok: false,
-                    message: "Elemento no encontrado"
-                })
-            }
-            return res.status(201).json({
-                ok: true,
-                message: `Cat with id ${id} updated`
-            }) 
+            return cat
     
         } catch (error) {
-            throw new Error()
+            throw error
         }
     }
 
-    async deleteCat(req: Request, res: Response): Promise<Response | any>{
+    async deleteCat(id: string): Promise<Response | any>{
         try {
-            const id = req.params.id;
+            //const id = req.params.id;
             const cat = await CatModel.findByIdAndDelete({_id: id})
-            if(cat === null) {
-                return res.status(404).json({
-                    ok: false,
-                    message: "Elemento no encontrado"
-                })
-            }
-            return res.json({
-                ok: true,
-                message: `Cat with id ${id} deleted`
-            })
+            return cat
     
         } catch (error) {
-            throw new Error()
+            throw error
         }
     }
 
-    async apiCats() {
+    async getApiCats() {
         const urlCats = process.env.API_CATS_URL || ''
         const apiKey = process.env.X_RAPIDAPI_KEY
         try {
