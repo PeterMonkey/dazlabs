@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import catRoute from './routes/cats.route.ts'
+import authRoute from './routes/auth.route.ts'
 import { connection } from './database/connect.ts'
 import swaggerUi from 'swagger-ui-express'
 import fs from 'fs'
@@ -23,6 +24,7 @@ connection()
 
 //routes
 app.use('/', catRoute)
+app.use('/auth', authRoute)
 
 app.listen(PORT, () => console.log(`Server Up on port ${PORT}`))
 

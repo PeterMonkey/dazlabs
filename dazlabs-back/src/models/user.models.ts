@@ -1,17 +1,17 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-export interface ICats {
-    breed: string,
-    origin: string,
-    image: string,
+export interface IUser extends Document {
+    name: string;
+    email: string;
+    password: string;
 }
 
-export const catSchema = new Schema<ICats>({
-    breed: {type: String, required: true},
-    origin: {type: String, required: true},
-    image: {type: String, required: true},
+export const userSchema = new Schema<IUser>({
+    name: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
 })
 
-const CatModel = model<ICats>('Cats', catSchema)
+const UserModel = model<IUser>('User', userSchema)
 
-export default CatModel
+export default UserModel

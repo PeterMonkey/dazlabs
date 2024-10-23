@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 import axios from "axios";
-import CatModel from "../models/user.models.ts";
+import CatModel from "../models/cat.models.ts";
 
 export async function connection(): Promise<void> {
     const dbUri = process.env.DB_URI || ''

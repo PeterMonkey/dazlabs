@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import CatModel, { ICats } from "../models/user.models.js";
+import CatModel, { ICats } from "../models/cat.models.ts";
 import axios from "axios";
 
 interface CustomRequest extends Request<{}, {}, {}, QueryParams> {}
