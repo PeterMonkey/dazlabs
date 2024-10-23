@@ -85,18 +85,18 @@ export default function ItemsCard(){
         <>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item: Items) => (
-          <Card key={item.breed}>
+          <Card key={item.breed} className="relative h-56">
             <CardHeader>
               <CardTitle>{item.breed}</CardTitle>
             </CardHeader>
             <CardContent>
               <p>{item.origin}</p>
             </CardContent>
-            <CardFooter className="grid grid-flow-col grid-cols-3 gap-4">
+            <CardFooter className="absolute bottom-0 grid grid-flow-col grid-cols-3 gap-4">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" onClick={() => setEditingItem(item)}>
-                    <Pencil className="mr-2 h-4 w-4" /> Editar
+                    <Pencil className=" h-4 w-4" /> Editar
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -119,7 +119,7 @@ export default function ItemsCard(){
                 </DialogContent>
               </Dialog>
               <Button variant="destructive" onClick={() => deleteItem(item._id)}>
-                <Trash2 className="mr-2 h-4 w-4" /> Eliminar
+                <Trash2 className="h-4 w-4" /> Eliminar
               </Button>
               <Button variant="secondary" onClick={() => openDialog(item)}>
                 Detalles
