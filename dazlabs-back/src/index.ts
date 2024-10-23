@@ -6,6 +6,7 @@ import { connection } from './database/connect.ts'
 import swaggerUi from 'swagger-ui-express'
 import fs from 'fs'
 import YAML from 'yaml'
+import errorHandler from './middleware/errorHandler.ts'
 import 'dotenv/config'
 
 const app = express()
@@ -25,6 +26,8 @@ connection()
 //routes
 app.use('/', catRoute)
 app.use('/auth', authRoute)
+
+app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server Up on port ${PORT}`))
 

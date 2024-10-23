@@ -34,6 +34,7 @@ const catsController = new CatsController()
 route.post('/create', catsController.createCat)
 route.get('/', catsController.getCats)
 route.get('/:id', catsController.getCatById)
+route.get('/breed/:breed', catsController.getCatsByBreed)
 route.patch('/update/:id', catsController.updateCat)
 route.delete('/delete/:id', catsController.deleteCat)
 

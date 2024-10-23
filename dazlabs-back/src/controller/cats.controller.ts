@@ -113,4 +113,25 @@ export class CatsController {
             next(error)
         }
     }
+
+    async getCatsByBreed(req: Request, res: Response, next: NextFunction){
+        
+        try {
+            const breed = req.params.breed;
+            const cat = await catServices.getCatsByBreed(breed)
+            if(!cat) {
+                const apiCat = await catServices.getApiCatsByBreed(breed)
+                res.status(200).json({
+                    cat: apiCat
+                })
+                return
+            }
+            res.status(200).json({
+                cat
+            })
+            return
+        } catch (error) {
+            next(error)
+        }
+    }
 }

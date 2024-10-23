@@ -13,7 +13,7 @@ import {
   } from "../components/ui/form"
 import { Input } from "../components/ui/input"
 
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { register } from "../services/auth.service"
 
   const formSchema = z.object({
@@ -24,6 +24,8 @@ import { register } from "../services/auth.service"
 
 export default function Register() {
 
+  const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
       })
@@ -32,7 +34,10 @@ export default function Register() {
         try {
             const response = await register(values.name, values.email, values.password)
             console.log(response)
-            return response
+            if(response.status === 201){
+              return navigate('/cat-list')
+            }
+            
         } catch (error) {
             return error
         }

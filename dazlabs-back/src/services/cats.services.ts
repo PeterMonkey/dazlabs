@@ -38,9 +38,20 @@ export class CatServices {
         //const id = req.params.id
         try {
             const cat = await CatModel.findById(id)
+            if(cat === null){
+                throw {
+                    error: true,
+                    status: 404,
+                    message: "Elemento no encontrado"
+                }
+            }
             return cat
         } catch (error) {
-            throw error
+            throw {
+                error: true,
+                status: 404,
+                message: "Elemento no encontrado"
+            }
         }
     }
 
@@ -65,20 +76,39 @@ export class CatServices {
             return cat
     
         } catch (error) {
+            throw {
+                error: true,
+                status: 404,
+                message: "Elemento no encontrado"
+            }
+        }
+    }
+
+    async getCatsByBreed(breedName: string) {
+        try {
+            const cat = await CatModel.findOne({breed: breedName})
+            return cat
+        } catch (error) {
             throw error
         }
     }
 
-    async getApiCats() {
+    async getApiCatsByBreed(breedName: string) {
         const urlCats = process.env.API_CATS_URL || ''
         const apiKey = process.env.X_RAPIDAPI_KEY
         try {
-            const cats = await axios.get(urlCats, {
+            const cats = await axios.get(`${urlCats}/breed/${breedName}`, {
                 headers: {
                     "x-rapidapi-key": `${apiKey}`
                 }
             })
-            return cats.data
+            // const newCat = {
+            //     breed: cats.data[0].breed,
+            //     origin: cats.data[0].origin,
+            //     image: cats.data[0].image
+            // }
+            // await CatModel.create(newCat)
+            return cats
             
         } catch (error) {
             console.error(error)

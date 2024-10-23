@@ -13,7 +13,7 @@ import {
   } from "../components/ui/form"
   import { Input } from "../components/ui/input"
 
-  import { Link } from "react-router-dom"
+  import { Link, useNavigate} from "react-router-dom"
   import { login } from "../services/auth.service"
 
   const formSchema = z.object({
@@ -24,6 +24,8 @@ import {
 
 export default function Login() {
 
+  const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
       })
@@ -31,7 +33,11 @@ export default function Login() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             const response = await login(values.email, values.password)
-            console.log(response)
+            console.log(response.status)
+            if(response.status === 200){
+              return navigate("/cat-list")
+            }
+            alert('Email o contraseña incorrecta')
         } catch (error) {
             console.log(error)
         }
